@@ -9,10 +9,12 @@ function App() {
   return (
     <div className="App">
       <Navbar/>
+      <Router>
       <Routes>
-      <Route path="/login" element={<Login />} />
-      <Route path="/signup" element={<Signup />} />
+      <Route path="/login" element={<Login/>} />
+      <Route path="/signup" element={<Signup/>} />
       </Routes>
+      </Router>
     </div>
   );
 }
