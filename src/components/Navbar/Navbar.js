@@ -7,7 +7,7 @@ import Typography from '@mui/material/Typography';
 import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@mui/icons-material/Search';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import { Link} from 'react-router-dom'
+import {Link} from 'react-router-dom';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -96,11 +96,20 @@ export default function Navbar() {
           component="div"
           sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
         >
-            <Link to="/Login">
+            <Link to="/login">
             Login
             </Link>
           </Typography>
- 
+          <Typography
+            variant="h6"
+            noWrap
+            component="div"
+            sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
+          >
+            <Link to="/signup">
+            Sign Up
+            </Link>
+          </Typography>
           <Search>
             <SearchIconWrapper>
               <SearchIcon />

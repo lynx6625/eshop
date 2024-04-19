@@ -11,25 +11,8 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import Link from '@mui/material/Link';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-
-
-function Copyright(props) {
-  return (
-    <Router>
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
-      <Link component={Link} to="/">
-        Your Website
-      </Link>{' '}
-      
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-    </Router>
-  );
-}
+import { Link} from 'react-router-dom';
+import { BrowserRouter as Router} from 'react-router-dom';
 
 // TODO remove, this demo shouldn't need to reset the theme.
 
@@ -46,10 +29,10 @@ export default function Login() {
   };
 
   return (
+    <Router>
     <ThemeProvider theme={defaultTheme}>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
-        <Router>
         <Box
           sx={{
             marginTop: 8,
@@ -61,6 +44,7 @@ export default function Login() {
           <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
             <LockOutlinedIcon />
           </Avatar>
+          
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
@@ -107,9 +91,8 @@ export default function Login() {
             
           </Box>
         </Box>
-        </Router>
-        <Copyright sx={{ mt: 8, mb: 4 }} />
       </Container>
     </ThemeProvider>
+    </Router>
   );
 }
