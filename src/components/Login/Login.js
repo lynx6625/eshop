@@ -17,17 +17,36 @@ import Navbar from '../Navbar/Navbar';
 import { useState } from 'react';
 import axios from 'axios';
 import Alert from '@mui/material/Alert';
+import { useEffect } from 'react';
+import { useAuth } from '../../common/AuthContext';
 // TODO remove, this demo shouldn't need to reset the theme.
 
 const defaultTheme = createTheme();
 const baseURL = "http://localhost:3001/api/v1/auth";
 export default function Login() {
   const navigate = useNavigate();
-  //states for input fields
-const [email, setEmail] = useState("");
-const [password, setPassword] = useState("");
-const [alert, setAlert] = useState({ open: false, message: '', severity: 'info' });  //initializing setAlert
-  const handleEmail = (e) => {
+
+
+
+    //states for input fields
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const [alert, setAlert] = useState({ open: false, message: '', severity: 'info' });//initializing setAlert
+  const { logIn } = useAuth();
+
+
+  
+
+useEffect(() => {
+  const authToken = localStorage.getItem('authToken');
+  if (authToken) {
+    navigate('/Products'); // Redirect to products page
+  }
+}, [navigate]);
+
+
+const handleEmail = (e) => {
     setEmail(e.target.value);
   };
   const handlePassword = (e) => {
@@ -46,25 +65,34 @@ const [alert, setAlert] = useState({ open: false, message: '', severity: 'info' 
       setAlert({ open: true, message: "All fields are required.", severity: 'warning' });
       return;
     }
-    console.log(emailval, pwval);
+try{
     const res= await axios.post(baseURL,JSON.stringify( { //sending the axios request
       email: emailval,
       password: pwval,
     }), {
       headers: { "Content-Type": "application/json" },
-    }).then((res) => {
-      console.log(res);
-      navigate("/Login");
-      setAlert({ open: true, message: "Signup successful!", severity: 'success' });
-    }).catch((error) => {
-      console.error("Signup error:", error);
-      setAlert({ open: true, message: `Signup failed: ${error.message}`, severity: 'error' });
     });
-  };
+    if (res.data.isAuthenticated) {  //since response has that boolean
+      logIn();
+      localStorage.setItem('user', JSON.stringify(res.data));  //storing response in local storage
+      navigate('/Products');    //redirecting to products page
+    } else {   
+       //else returning error that server returns
+      console.log("Signup error:", res.data.message);
+      setAlert({ open: true, message: `Signup failed: ${res.data.message}`, severity: 'error' });
+  }
+}
+catch (error) {
+  setAlert({         //else returning error that server returns
+    open: true,
+    message: `Login failed: ${error.response ? error.response.data.message : error.message}`,
+    severity: 'error'
+  });
+}
+};
 
 
   return (
-    
     <ThemeProvider theme={defaultTheme}>
       <Navbar/>    
       <Container component="main" maxWidth="xs">
@@ -138,3 +166,4 @@ const [alert, setAlert] = useState({ open: false, message: '', severity: 'info' 
     </ThemeProvider>
   );
 }
+

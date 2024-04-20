@@ -9,6 +9,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { useNavigate } from "react-router-dom";
 import Button from '@mui/material/Button';
+import { useAuth } from '../../common/AuthContext';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -52,8 +53,17 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
+
+
 export default function Navbar() {
   const navigate = useNavigate();
+  const { isLoggedIn, logOut } = useAuth(); // Using Auth Context to see if logged in
+  const isAdmin = localStorage.getItem('userRole') === 'ADMIN';
+  const handleLogOut = () => {
+    logOut();
+    navigate("/Login");
+  };
+
   return (
     
     <Box sx={{ flexGrow: 1 }}>
@@ -69,15 +79,31 @@ export default function Navbar() {
           >
            UPGRAD-eSHOP
           </Typography>
-          <Button color="inherit" sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}>
-            Log Out
-          </Button>
-          <Button color="inherit" sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}>
+          {isLoggedIn ? (
+            <>
+             
+          
+          <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'flex-end' }}></Box>
+          <Search>
+            <SearchIconWrapper>
+              <SearchIcon />
+            </SearchIconWrapper>
+            <StyledInputBase
+              placeholder="Search…"
+              inputProps={{ 'aria-label': 'search' }}
+            />
+          </Search>
+          <Button color="inherit"  onClick={handleLogOut}>
             Sign Out
           </Button>
+          {isAdmin && (
           <Button color="inherit" sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}>
             Add Products
           </Button>
+            )}
+              </>
+          ) : (
+            <>
           <Button color="inherit"
           sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
           onClick={() => {navigate('/Login')}}>
@@ -91,15 +117,11 @@ export default function Navbar() {
             Sign Up
 
           </Button>
-          <Search>
-            <SearchIconWrapper>
-              <SearchIcon />
-            </SearchIconWrapper>
-            <StyledInputBase
-              placeholder="Search…"
-              inputProps={{ 'aria-label': 'search' }}
-            />
-          </Search>
+          </>
+          )}
+          
+          
+
         </Toolbar>
       </AppBar>
     </Box>
