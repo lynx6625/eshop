@@ -5,14 +5,14 @@ import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
-import { Link} from 'react-router-dom';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-
+import { useNavigate } from "react-router-dom";
+import Navbar from '../Navbar/Navbar';
 
 const defaultTheme = createTheme();
 
@@ -25,11 +25,14 @@ export default function SignUp() {
       password: data.get('password'),
     });
   };
-
+  const navigate = useNavigate();
   return (
+    
     <ThemeProvider theme={defaultTheme}>
+      <Navbar/>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
+        
         <Box
           sx={{
             marginTop: 8,
@@ -104,10 +107,8 @@ export default function SignUp() {
               Sign Up
             </Button>
             <Grid container justifyContent="flex-end">
-              <Grid item>
-                <Link href="#" variant="body2">
+              <Grid item onClick={() => {navigate('/Login')}}>
                   Already have an account? Sign in
-                </Link>
               </Grid>
             </Grid>
           </Box>

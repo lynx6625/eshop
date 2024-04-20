@@ -11,14 +11,15 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { Link} from 'react-router-dom';
-import { BrowserRouter as Router} from 'react-router-dom';
-
+import { useNavigate } from "react-router-dom";
+import Navbar from '../Navbar/Navbar';
 // TODO remove, this demo shouldn't need to reset the theme.
 
 const defaultTheme = createTheme();
 
 export default function Login() {
+  const navigate = useNavigate();
+  
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -29,8 +30,9 @@ export default function Login() {
   };
 
   return (
-    <Router>
+    
     <ThemeProvider theme={defaultTheme}>
+      <Navbar/>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box
@@ -82,17 +84,13 @@ export default function Login() {
               Sign In
             </Button>
             <Grid container>
-              <Grid item>
-                <Link component={Link} to="/Signup">
+              <Grid item onClick={() => {navigate('/Signup')}}>
                   {"Don't have an account? Sign Up"}
-                </Link>
               </Grid>
             </Grid>
-            
           </Box>
         </Box>
       </Container>
     </ThemeProvider>
-    </Router>
   );
 }

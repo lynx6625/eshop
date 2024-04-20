@@ -7,7 +7,8 @@ import Typography from '@mui/material/Typography';
 import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@mui/icons-material/Search';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import {Link} from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
+import Button from '@mui/material/Button';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -52,64 +53,44 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function Navbar() {
+  const navigate = useNavigate();
   return (
+    
     <Box sx={{ flexGrow: 1 }}>
       
-      <AppBar position="static">
+      <AppBar position="static" sx={{ bgcolor: "#3f51b5" }}>
         <Toolbar>
         <ShoppingCartIcon/>
-          <Typography
+        <Typography
             variant="h6"
             noWrap
             component="div"
-            sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
+            sx={{ display: { xs: 'none', sm: 'block' } }}
           >
-            Home
+           UPGRAD-eSHOP
           </Typography>
-          <Typography
-            variant="h6"
-            noWrap
-            component="div"
-            sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
-          >
+          <Button color="inherit" sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}>
             Log Out
-          </Typography>
-          <Typography
-            variant="h6"
-            noWrap
-            component="div"
-            sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
-          >
+          </Button>
+          <Button color="inherit" sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}>
             Sign Out
-          </Typography>
-          <Typography
-            variant="h6"
-            noWrap
-            component="div"
-            sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
-          >
+          </Button>
+          <Button color="inherit" sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}>
             Add Products
-          </Typography>
-          <Typography
-          variant="h6"
-          noWrap
-          component="div"
+          </Button>
+          <Button color="inherit"
           sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
-        >
-            <Link to="/login">
+          onClick={() => {navigate('/Login')}}>
+
             Login
-            </Link>
-          </Typography>
-          <Typography
-            variant="h6"
-            noWrap
-            component="div"
+
+          </Button>
+          <Button color="inherit"
             sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
-          >
-            <Link to="/signup">
+            onClick={() => {navigate('/Signup')}}>
             Sign Up
-            </Link>
-          </Typography>
+
+          </Button>
           <Search>
             <SearchIconWrapper>
               <SearchIcon />
