@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -10,29 +10,63 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
+import { Stack } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from "react-router-dom";
 import Navbar from '../Navbar/Navbar';
+import { useState } from 'react';
+import axios from 'axios';
+import Alert from '@mui/material/Alert';
 // TODO remove, this demo shouldn't need to reset the theme.
 
 const defaultTheme = createTheme();
-
+const baseURL = "http://localhost:3001/api/v1/auth";
 export default function Login() {
   const navigate = useNavigate();
-  
-  const handleSubmit = (event) => {
+  //states for input fields
+const [email, setEmail] = useState("");
+const [password, setPassword] = useState("");
+const [alert, setAlert] = useState({ open: false, message: '', severity: 'info' });  //initializing setAlert
+  const handleEmail = (e) => {
+    setEmail(e.target.value);
+  };
+  const handlePassword = (e) => {
+    setPassword(e.target.value);
+  };
+ 
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
+    const emailval = email;
+    const pwval = password;
+    if (
+      email === "" ||
+      password === ""
+    ) {
+      console.error("All fields are required.");
+      setAlert({ open: true, message: "All fields are required.", severity: 'warning' });
+      return;
+    }
+    console.log(emailval, pwval);
+    const res= await axios.post(baseURL,JSON.stringify( { //sending the axios request
+      email: emailval,
+      password: pwval,
+    }), {
+      headers: { "Content-Type": "application/json" },
+    }).then((res) => {
+      console.log(res);
+      navigate("/Login");
+      setAlert({ open: true, message: "Signup successful!", severity: 'success' });
+    }).catch((error) => {
+      console.error("Signup error:", error);
+      setAlert({ open: true, message: `Signup failed: ${error.message}`, severity: 'error' });
     });
   };
+
 
   return (
     
     <ThemeProvider theme={defaultTheme}>
-      <Navbar/>
+      <Navbar/>    
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box
@@ -50,6 +84,13 @@ export default function Login() {
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
+          {alert.open && (         //alert from material ui
+            <Stack sx={{ width: '100%', mt: 2 }} spacing={2}>
+              <Alert severity={alert.severity} onClose={() => setAlert({ ...alert, open: false })}>
+                {alert.message}
+              </Alert>
+            </Stack>
+          )}
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
             <TextField
               margin="normal"
@@ -59,6 +100,7 @@ export default function Login() {
               label="Email Address"
               name="email"
               autoComplete="email"
+              onChange={handleEmail}
               autoFocus
             />
             <TextField
@@ -70,6 +112,7 @@ export default function Login() {
               type="password"
               id="password"
               autoComplete="current-password"
+              onChange={handlePassword}
             />
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
@@ -83,6 +126,7 @@ export default function Login() {
             >
               Sign In
             </Button>
+            
             <Grid container>
               <Grid item onClick={() => {navigate('/Signup')}}>
                   {"Don't have an account? Sign Up"}

@@ -13,6 +13,10 @@ import { useNavigate } from "react-router-dom";
 import Navbar from "../Navbar/Navbar";
 import axios from "axios";
 import { useState } from "react";
+import Alert from '@mui/material/Alert';
+import { Stack } from '@mui/material';
+
+
 
 const defaultTheme = createTheme();
 const baseURL = "http://localhost:3001/api/v1/users"; //setting endpoint to what was give in backend index.js
@@ -24,6 +28,7 @@ export default function SignUp() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [contactNumber, setContactNumber] = useState("");
+  const [alert, setAlert] = useState({ open: false, message: '', severity: 'info' });  //initializing setAlert
   
     //Below are handlers for input fields
     const handleFirstName = (e) => {
@@ -63,13 +68,13 @@ export default function SignUp() {
     contactNumber === ""
   ) {
     console.error("All fields are required.");
-    alert("All fields are required.");
+    setAlert({ open: true, message: "All fields are required.", severity: 'warning' });
     return;
   }
 
   if (contactNumber.length !== 10) {
     //Phone number should be 10 digits
-    alert("Enter valid contact number");
+    setAlert({ open: true, message: "Enter valid contact number.", severity: 'warning' });
     return;
   } 
   console.log(fsval,lsval,pwval, emailval,cnval);
@@ -86,7 +91,7 @@ export default function SignUp() {
     navigate("/Login");
   }).catch((error) => {
     console.error("Signup error:", error);
-    alert(`Signup failed: ${error.message}`);
+    setAlert({ open: true, message: `Signup failed: ${error.message}`, severity: 'error' });
   });
 };
 
@@ -112,6 +117,13 @@ export default function SignUp() {
             <Typography component="h1" variant="h5">
               Sign up
             </Typography>
+            {alert.open && (         //alert from material ui
+            <Stack sx={{ width: '100%', mt: 2 }} spacing={2}>
+              <Alert severity={alert.severity} onClose={() => setAlert({ ...alert, open: false })}>
+                {alert.message}
+              </Alert>
+            </Stack>
+          )}
             <Box
               component="form"
               noValidate
