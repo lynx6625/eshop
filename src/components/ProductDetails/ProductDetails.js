@@ -6,10 +6,9 @@ import { Box, Typography, Button, TextField } from '@mui/material';
 
 
 const ProductDetails = () => {
-    const { id } = useParams();
+    const { id } = useParams();         
     const [productDetails, setProductDetails] = useState(null);
-    const [quantity, setQuantity] = useState(1);
-    const navigate = useNavigate();
+    const [quantity, setQuantity] = useState(1);       //min quantity is 1
 
 useEffect(() => {
     if (id) {
@@ -18,7 +17,7 @@ useEffect(() => {
                 setProductDetails(response.data);
             })
             .catch(error => {
-                console.error('Error fetching product details:', error);
+                console.error('Error fetching product details:', error); //error handling
             });
     } else {
         console.log("Product ID is undefined.");
@@ -26,7 +25,7 @@ useEffect(() => {
 }, [id]);
 
     if (!productDetails) {
-        return <Typography>Loading...</Typography>;
+        return <Typography>Product details not available</Typography>;       
     }
 
     return (
@@ -57,10 +56,10 @@ useEffect(() => {
                 type="number"
                 value={quantity}
                 onChange={(e) => setQuantity(e.target.value)}
-                inputProps={{ min: "1", step: "1" }} // Minimum quantity should be 1
+                inputProps={{ min: "1", step: "1" }} // min order quantity
             />
             <Button variant="contained" color="primary">
-                Add to Cart
+                Place Order
             </Button>
         </Box>
     );
