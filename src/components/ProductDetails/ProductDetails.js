@@ -6,9 +6,13 @@ import { Box, Typography, Button, TextField } from '@mui/material';
 
 
 const ProductDetails = () => {
+    const navigate = useNavigate();
     const { id } = useParams();         
     const [productDetails, setProductDetails] = useState(null);
     const [quantity, setQuantity] = useState(1);       //min quantity is 1
+    const handlePlaceOrder = () => {
+        navigate('/create-order', { state: { productId: id, quantity } });
+      };
 
 useEffect(() => {
     if (id) {
@@ -58,10 +62,11 @@ useEffect(() => {
                 onChange={(e) => setQuantity(e.target.value)}
                 inputProps={{ min: "1", step: "1" }} // min order quantity
             />
-            <Button variant="contained" color="primary">
+            <Button variant="contained" color="primary" onClick={handlePlaceOrder}>
                 Place Order
             </Button>
         </Box>
+        
     );
 };
 

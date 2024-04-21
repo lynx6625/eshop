@@ -166,4 +166,3 @@ catch (error) {
     </ThemeProvider>
   );
 }
-

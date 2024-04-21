@@ -28,15 +28,30 @@ const Products = () => {
         if (!isLoggedIn){            //if use isn't logged in, redirect to login
             navigate("/login");
         } else {        //making axios request to get catgeories and products
-            axios.get('http://localhost:3001/api/v1/products/categories')
-                .then(response => setCategories(response.data))
-                .catch(error => console.error('Error fetching categories:', error));
-
-            axios.get('http://localhost:3001/api/v1/products')
-                .then(response => setProducts(response.data))
-                .catch(error => console.error('Error fetching products:', error));
+          const fetchCategories = async () => {
+            try {
+              const response = await axios.get('http://localhost:3001/api/v1/products/categories');
+              setCategories(response.data);
+            } catch (error) {
+              console.error('Error fetching categories:', error);
+            }
+          };
+    
+          // Function to fetch products
+          const fetchProducts = async () => {
+            try {
+              const response = await axios.get('http://localhost:3001/api/v1/products');
+              setProducts(response.data);
+            } catch (error) {
+              console.error('Error fetching products:', error);
+            }
+          };
+    
+          // Calling both fetch functions
+          fetchCategories();
+          fetchProducts();
         }
-    }, [isLoggedIn, navigate]); 
+      }, [isLoggedIn, navigate]);
 
 
       //code for sorting products
