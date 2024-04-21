@@ -19,6 +19,10 @@ const Products = () => {
     const [selectedCategory, setSelectedCategory] = useState('');
     const [sortOrder, setSortOrder] = useState('default');
 
+    const handleBuyClick = (productId) => {       //if use clicks buy button
+      navigate(`/product-details/${productId}`);
+  };
+
 
     useEffect(() => {
         if (!isLoggedIn){            //if use isn't logged in, redirect to login
@@ -81,25 +85,36 @@ const Products = () => {
         <>
           <Navbar />
           <Box sx={{ flexGrow: 1 }}>
-            <StyledAppBar position="static">
-              <ToggleButtonGroup
-                value={selectedCategory}
-                exclusive
-                onChange={(event, newCategory) => setSelectedCategory(newCategory)}
-                aria-label="product categories"
-              >
+      <StyledAppBar position="static">
+        <Box sx={{ display: 'flex', alignItems: 'center', padding: '8px' }}>
+          {/* Label for the product categories */}
+          <Typography variant="h6" component="div" sx={{ marginRight: '16px' }}>
+            Categories:
+          </Typography>
+          <ToggleButtonGroup
+            value={selectedCategory}
+            exclusive
+            onChange={(event, newCategory) => setSelectedCategory(newCategory)}
+            aria-label="product categories"
+          >
                 {categories.map((category) => (
                   <CategoryToggleButton key={category} value={category} aria-label={category}>
                     {category}
                   </CategoryToggleButton>
                 ))}
               </ToggleButtonGroup>
+              </Box>
             </StyledAppBar>
-            <Box sx={{ padding: '8px', display: 'flex', justifyContent: 'flex-end', backgroundColor: '#eeeeee' }}>
+            <Box sx={{ padding: '8px', display: 'flex', justifyContent: 'flex-end', alignItems: 'center', backgroundColor: '#eeeeee' }}>
+        <Typography variant="h6" component="div" sx={{ marginRight: '16px' }}>
+          Sort By:
+        </Typography>
+            <Box>
               <SortButton variant="outlined" onClick={() => setSortOrder('default')}>Default</SortButton>
               <SortButton variant="outlined" onClick={() => setSortOrder('price-low-high')}>Price Low to High</SortButton>
               <SortButton variant="outlined" onClick={() => setSortOrder('price-high-low')}>Price High to Low</SortButton>
               <SortButton variant="outlined" onClick={() => setSortOrder('newest')}>Newest</SortButton>
+            </Box>
             </Box>
             <ProductsGrid container spacing={2}>
   {sortedProducts.map((product) => (
@@ -133,6 +148,13 @@ const Products = () => {
           <Typography variant="body2" color="text.secondary">
             Available Items: {product.availableItems}
           </Typography>
+          <Button 
+                  variant="contained" 
+                  color="primary" 
+                  onClick={() => handleBuyClick(product._id) }
+                >                  
+                  Buy
+                </Button>
         </CardContent>
       </Card>
     </Grid>
