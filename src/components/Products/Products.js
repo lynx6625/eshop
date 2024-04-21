@@ -21,10 +21,9 @@ const Products = () => {
 
 
     useEffect(() => {
-        if (!isLoggedIn){
+        if (!isLoggedIn){            //if use isn't logged in, redirect to login
             navigate("/login");
-        } else {
-            // Only fetch categories and products if the user is logged in
+        } else {        //making axios request to get catgeories and products
             axios.get('http://localhost:3001/api/v1/products/categories')
                 .then(response => setCategories(response.data))
                 .catch(error => console.error('Error fetching categories:', error));
@@ -73,8 +72,7 @@ const Products = () => {
         marginTop: '20px',
       });
       const StyledAppBar = styled(AppBar)({
-        // Define your AppBar styles here
-        background: 'white', // Assuming a light theme
+        background: 'white', 
         color: 'black',
       });
 
